@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\NewsApiService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
@@ -10,14 +11,21 @@ use Illuminate\View\View;
 
 class HomeController extends Controller
 {
+    protected $newsApiService;
+
+    public function __construct(NewsApiService $newsApiService)
+    {
+        $this->newsApiService = $newsApiService;
+    }
 
     public function index(): View
     {
         $filePath = base_path('resources/views/data/non-pms.json');
         $jsonData = file_get_contents($filePath);
         $dataNonPMS = json_decode($jsonData, true);
-
-        return view('home', compact('dataNonPMS'));
+        $response = $this->newsApiService->getAllNews();
+        $articles = $response['status'] ? array_slice($response['data'], 0, 3) : [];
+        return view('home', compact('dataNonPMS', 'articles'));
     }
 
     public function GetListingDataAjax(Request $request): JsonResponse

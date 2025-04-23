@@ -8,6 +8,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InformationController;
 use App\Http\Controllers\InverstorRelationController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PartnershipController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -53,5 +54,15 @@ Route::post('/partnership/sendMessage', [PartnershipController::class, 'sendMess
 // CONTACT US
 Route::get('/contact-us', [ContactController::class, 'index'])->name('contact-us');
 
-// INFORMATIONS 
+// INFORMATIONS
 Route::get('/information', [InformationController::class, 'index'])->name('information-page');
+
+Route::controller(NewsController::class)->group(function () {
+    Route::get('/news', 'index')->name('news.index');
+    Route::get('/news/{slug}', 'show')->name('news.show');
+});
+
+Route::get('/test-service', function () {
+    $service = app(App\Services\NewsApiService::class);
+    return get_class($service);
+});

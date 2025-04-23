@@ -7,33 +7,32 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="keywords" content="Asets, properti, investasi, pengelolaan properti, solusi properti, Indonesia" />
     <title>Asets - @yield('title')</title>
-
     {{-- FONTS CDN --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.6/dist/cdn.min.js"></script>
-
+    @stack('styles')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="poppins-regular ">
+<body class="poppins-regular">
     <main>
         <div>
-            <header>
-                <x-navbar />
-            </header>
+            @if (!isset($hideNavbar) || !$hideNavbar)
+                <header>
+                    <x-navbar />
+                </header>
+            @endif
             @yield('content')
             <x-footer />
         </div>
     </main>
-
     @if (session('successLogin'))
         <script>
             Swal.fire({
@@ -48,7 +47,6 @@
             });
         </script>
     @endif
-
     @if (session('successLogout'))
         <script>
             Swal.fire({
@@ -60,7 +58,7 @@
             });
         </script>
     @endif
-
+    @stack('scripts')
 </body>
 
 </html>
