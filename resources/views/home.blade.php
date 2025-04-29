@@ -443,11 +443,11 @@
                 <div x-show="!isLoading">
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4  gap-4 auto-rows-fr ">
 
-                        <template x-for="spaceList in spaceData" :key="spaceList.id">
+                        <template x-for="spaceList in spaceData" :key="spaceList.space.id">
                             <div class="rounded-lg flex-col flex ">
                                 <div class="relative px-4 flex justify-between top-9 left-1 z-10">
                                     <span class="bg-custom-primary text-xs rounded shadow py-1 px-4 text-white"
-                                        x-text="`${spaceList.available == 1 ? 'Available' : 'Leased'}`"></span>
+                                        x-text="`Available`"></span>
 
                                     @auth
                                         <a href="#" class="love-button">
@@ -475,50 +475,31 @@
 
                                     <div class="rounded-2xl overflow-hidden">
                                         <img class="rounded-2xl w-full h-72 object-cover cursor-pointer"
-                                            :src="spaceList.photos[0] ??
+                                            :src="spaceList.media && spaceList.media.length > 0 ? spaceList.media[0].url :
                                                 'https://th.bing.com/th/id/OIP.H1gHhKVbteqm1U5SrwpPgwAAAA?rs=1&pid=ImgDetMain'"
                                             alt="Thumbnail Image" />
                                     </div>
-
-                                    {{-- Modal PupUp --}}
-                                    {{-- <div x-show="isOpen" @click="closeModal"
-                                        class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
-                                        x-transition:enter="transition ease-out duration-300"
-                                        x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-                                        x-transition:leave="transition ease-in duration-300"
-                                        x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
-                                        <div class="relative">
-                                            <img :src="spaceList.listing.listing_photos[0] ??
-                                                'https://th.bing.com/th/id/OIP.H1gHhKVbteqm1U5SrwpPgwAAAA?rs=1&pid=ImgDetMain'"
-                                                alt="Large Image" class="rounded-lg w-[470px] h-[470px] object-cover"
-                                                @click.stop />
-                                            <button @click="closeModal"
-                                                class="absolute top-0 -right-5 bg-custom-primary text-white p-2 rounded-full focus:outline-none hover:bg-purple-600">
-                                                X
-                                            </button>
-                                        </div>
-                                    </div> --}}
 
                                 </div>
 
                                 <div class="">
                                     <div
-                                        class="rounded-2xl  bg-white flex flex-col shadow-lg p-3 m-2 -top-14 relative min-h-56">
+                                        class="rounded-2xl bg-white flex flex-col shadow-lg p-3 m-2 -top-14 relative min-h-56">
 
                                         <div class="flex flex-col text-sm py-1 space-y-3">
                                             <div>
-                                                <a :href="`/detail-spbu/${spaceList.listing.listing_id}`">
+                                                <a :href="`/detail-spbu/${spaceList.listing.id}`">
                                                     <h5 class="font-bold lg:text-sm text-custom-primary line-clamp-2"
-                                                        x-text="spaceList.listing.listing_address">
+                                                        x-text="spaceList.listing.address">
                                                     </h5>
                                                 </a>
                                                 <p class="mb-3 mt-1 lg:text-xs font-normal text-gray-700 line-clamp-1"
                                                     x-text="(() => {
-                                                        const parts = spaceList.listing.listing_address.split(',').map(part => part.trim());
-                                                        return parts[parts.length - 1] === 'Indonesia'
-                                                            ? parts[parts.length - 3]
-                                                            : parts[parts.length - 2] || 'No city data';
-                                                    })()">
+                                                const parts = spaceList.listing.address.split(',').map(part => part.trim());
+                                                return parts[parts.length - 1] === 'Indonesia'
+                                                    ? parts[parts.length - 3]
+                                                    : parts[parts.length - 2] || 'No city data';
+                                            })()">
                                                 </p>
                                             </div>
 
@@ -537,7 +518,15 @@
                                                     </p>
 
                                                     <p class="leading-relaxed ml-2 font-semibold text-custom-primary"
-                                                        x-html="spaceList.display_price.replace('Bulan', 'Month')">
+                                                        x-text="(() => {
+                                                    let priceText = '';
+                                                    if (spaceList.space.price_type === 'sqm') {
+                                                        priceText = `IDR ${Number(spaceList.space.price).toLocaleString()} / m² / Month`;
+                                                    } else {
+                                                        priceText = `IDR ${Number(spaceList.space.price).toLocaleString()} / Month`;
+                                                    }
+                                                    return priceText;
+                                                })()">
                                                     </p>
                                                 </div>
                                                 <div class="flex">
@@ -548,7 +537,7 @@
                                                         </svg>
                                                     </p>
                                                     <p class="leading-relaxed ml-2 font-semibold text-custom-primary"
-                                                        x-text="spaceList.type.name">
+                                                        x-text="spaceList.space.type">
                                                     </p>
 
                                                 </div>
@@ -561,11 +550,11 @@
                                                         </svg>
                                                     </p>
                                                     <p class="leading-relaxed ml-2 font-semibold text-custom-primary"
-                                                        x-text="`${spaceList.size_sqm} /m2`"></p>
+                                                        x-text="`${spaceList.space.size_sqm} m²`"></p>
                                                 </div>
                                                 <br>
                                                 <div class="flex mt-auto ">
-                                                    <a :href="`/detail-spbu/${spaceList.listing.listing_id}`"
+                                                    <a :href="`/detail-spbu/${spaceList.listing.id}`"
                                                         class="w-full text-center text-white bg-purple-950 hover:bg-purple-800 focus:ring-4  font-medium rounded-lg text-xs px-3 py-2 ">
                                                         Detail
                                                     </a>
@@ -1094,7 +1083,7 @@
             };
         }
 
-        // SPACE AVAILABLE SCRIPT
+        // SPACE AVAILABLE SCRIPT - UPDATED
         function paginationComponentSpace() {
             return {
                 spaceData: [],
@@ -1105,41 +1094,27 @@
                 totalPagesArray: [],
                 uniqueAreas: [],
                 selectedArea: '',
-                baseUrl: 'https://pertare.asets.id/api/space-available',
+                baseUrl: 'https://service.asets.id/api/space-available',
                 isLoading: false,
 
-                formatPriceToRupiah(value) {
-                    return new Intl.NumberFormat('id-ID', {
-                        style: 'currency',
-                        currency: 'IDR',
-                        minimumFractionDigits: 0
-                    }).format(value || 0);
-                },
-
-                fetchData(url = `${this.baseUrl}?page=1`, pageLimit = 100) {
+                fetchData() {
                     this.isLoading = true;
                     const self = this;
 
-                    fetch(url)
+                    fetch(this.baseUrl)
                         .then(response => response.json())
                         .then(data => {
                             if (data && data.data) {
-                                self.allPagesData.push(...data.data);
-
+                                // Store the data
+                                self.allPagesData = data.data;
                                 self.updatePageData();
 
-                                const {
-                                    current_page,
-                                    last_page,
-                                    next_page_url
-                                } = data.pagination;
-                                self.totalPages = Math.min(last_page, pageLimit);
-
-                                if (next_page_url && current_page < pageLimit) {
-                                    self.fetchData(next_page_url, pageLimit);
-                                } else {
-                                    self.generateUniqueAreas();
+                                // Handle pagination info from the API
+                                if (data.requested) {
+                                    self.totalPages = data.requested.max_page || 1;
                                 }
+
+                                self.generateUniqueAreas();
                             }
                         })
                         .catch(error => {
@@ -1151,12 +1126,16 @@
                 },
 
                 generateUniqueAreas() {
-                    this.uniqueAreas = [...new Set(this.allPagesData.map(item => item.area_name))];
+                    // Extract unique cities from listing data
+                    this.uniqueAreas = [...new Set(this.allPagesData
+                        .filter(item => item.listing && item.listing.city)
+                        .map(item => item.listing.city))];
                 },
 
                 updatePageData() {
                     const filteredData = this.selectedArea ?
-                        this.allPagesData.filter(item => item.area_name === this.selectedArea) :
+                        this.allPagesData.filter(item =>
+                            item.listing && item.listing.city === this.selectedArea) :
                         this.allPagesData;
 
                     this.totalPages = Math.ceil(filteredData.length / this.perPage);
@@ -1184,7 +1163,7 @@
 
                     if (endPage > totalPages) {
                         endPage = totalPages;
-                        startPage = totalPages - pageWindow + 1;
+                        startPage = Math.max(1, totalPages - pageWindow + 1);
                     }
 
                     for (let i = startPage; i <= endPage; i++) {
