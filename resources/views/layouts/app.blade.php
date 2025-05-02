@@ -19,6 +19,18 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.6/dist/cdn.min.js"></script>
     @stack('styles')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-057LB4FWDX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', 'G-057LB4FWDX');
+    </script>
 </head>
 
 <body class="poppins-regular">
