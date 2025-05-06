@@ -10,7 +10,9 @@ use App\Http\Controllers\InverstorRelationController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PartnershipController;
+use App\Http\Controllers\PrivacyPolicyController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 
 // AUTH
@@ -61,6 +63,19 @@ Route::controller(NewsController::class)->group(function () {
     Route::get('/news', 'index')->name('news.index');
     Route::get('/news/{slug}', 'show')->name('news.show');
 });
+
+// In routes/web.php
+Route::get('/cookie-policy', function () {
+    return view('pages.cookie-policy');
+})->name('cookie.policy');
+
+Route::post('/cookie-consent', function (Request $request) {
+    // Store the consent in the session if needed
+    session(['cookie_consent' => $request->all()]);
+    return response()->json(['success' => true]);
+})->name('cookie.consent');
+
+Route::get('/privacy-policy', [PrivacyPolicyController::class, 'index'])->name('privacy-policy');
 
 Route::get('/test-service', function () {
     $service = app(App\Services\NewsApiService::class);

@@ -122,6 +122,8 @@
         </div>
         <br>
 
+        <x-hakita />
+
         {{-- SPBU CARD LOCATION SECTION --}}
         <div class="mb-16">
             <div class="text-center">

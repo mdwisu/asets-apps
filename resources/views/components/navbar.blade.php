@@ -1,16 +1,17 @@
 <nav x-data="{
     scrolled: false,
     activeLink: window.location.pathname,
-    isDetailPage: ['/detail-spbu', '/users/profile', '/users/wishlist', '/information', '/detail/space'].some(path => window.location.pathname.split('?')[0].startsWith(path)),
+    isDetailPage: ['/detail-spbu', '/users/profile', '/users/wishlist', '/information', '/detail/space', '/privacy-policy'].some(path => window.location.pathname.split('?')[0].startsWith(path)),
 }" x-init="scrolled = window.scrollY > 5;
-window.addEventListener('scroll', () => { scrolled = window.scrollY > 5; })" :class="scrolled ? 'bg-white shadow py-2 lg:py-1' : 'bg-transparent'"
+window.addEventListener('scroll', () => { scrolled = window.scrollY > 5; })"
+    :class="scrolled || isDetailPage ? 'bg-white shadow py-2 lg:py-1' : 'bg-transparent'"
     class="fixed w-full z-20 top-0 start-0" x-transition x-cloak>
     <div class="flex items-center justify-between mx-auto lg:px-12 lg:py-2">
 
         {{-- Detail Page --}}
         <div x-show="isDetailPage" x-cloak class="flex items-center justify-between w-full">
-            <a href="#" class="flex items-center space-x-3">
-                <img class="h-14 p-0" :src="scrolled ? '/assets/img/logo-asets.png' : '/assets/img/logo-asets.png'"
+            <a href="{{ route('home') }}" class="flex items-center space-x-3">
+                <img class="h-14 p-0" src="{{ asset('assets/img/logo-asets.png') }}"
                     :class="scrolled ? 'h-12' : 'h-14 p-0'" alt="asets-logo">
             </a>
 
@@ -24,20 +25,20 @@ window.addEventListener('scroll', () => { scrolled = window.scrollY > 5; })" :cl
 
             <div class="hidden md:flex space-x-2">
                 <a href="{{ route('home') }}"
-                    class="rounded-lg px-4 py-1 {{ request()->routeIs('home') ? 'bg-white/20 backdrop-blur-md ' : 'hover:underline' }}"
+                    class="text-gray-800 rounded-lg px-4 py-1 {{ request()->routeIs('home') ? 'bg-white/20 backdrop-blur-md' : 'hover:underline' }}"
                     aria-current="page">Home</a>
                 <a href="{{ route('location') }}"
-                    class="rounded-lg px-4 py-1 {{ request()->routeIs('location') ? 'bg-white/20 backdrop-blur-md' : 'hover:underline' }}">Location</a>
+                    class="text-gray-800 rounded-lg px-4 py-1 {{ request()->routeIs('location') ? 'bg-white/20 backdrop-blur-md' : 'hover:underline' }}">Location</a>
                 <a href="{{ route('about') }}"
-                    class="rounded-lg px-4 py-1 {{ request()->routeIs('about') ? 'bg-white/20 backdrop-blur-md' : 'hover:underline' }}">About
+                    class="text-gray-800 rounded-lg px-4 py-1 {{ request()->routeIs('about') ? 'bg-white/20 backdrop-blur-md' : 'hover:underline' }}">About
                     Us</a>
                 <a href="{{ route('investor-relation') }}"
-                    class="rounded-lg px-4 py-1 {{ request()->routeIs('investor-relation') ? 'bg-white/20 backdrop-blur-md' : 'hover:underline' }}">Investor
+                    class="text-gray-800 rounded-lg px-4 py-1 {{ request()->routeIs('investor-relation') ? 'bg-white/20 backdrop-blur-md' : 'hover:underline' }}">Investor
                     Relations</a>
                 <a href="{{ route('partnership') }}"
-                    class="rounded-lg px-4 py-1 {{ request()->routeIs('partnership') ? 'bg-white/20 backdrop-blur-md' : 'hover:underline' }}">Partnership</a>
+                    class="text-gray-800 rounded-lg px-4 py-1 {{ request()->routeIs('partnership') ? 'bg-white/20 backdrop-blur-md' : 'hover:underline' }}">Partnership</a>
                 <a href="{{ route('contact-us') }}"
-                    class="rounded-lg px-4 py-1 {{ request()->routeIs('contact-us') ? 'bg-white/20 backdrop-blur-md' : 'hover:underline' }}">Contact</a>   
+                    class="text-gray-800 rounded-lg px-4 py-1 {{ request()->routeIs('contact-us') ? 'bg-white/20 backdrop-blur-md' : 'hover:underline' }}">Contact</a>
                 <div class="flex">
                     <x-dropdown-users />
                 </div>
@@ -48,7 +49,7 @@ window.addEventListener('scroll', () => { scrolled = window.scrollY > 5; })" :cl
         <div x-show="!isDetailPage" x-cloak class="flex items-center justify-between w-full px-3 lg:px-0">
             <a href="{{ route('home') }}" class="flex items-center">
                 <img :src="scrolled ? '/assets/img/logo-asets.png' : '/assets/img/logo-aset-putih.png'"
-                    :class="scrolled ? 'h-12' : 'h-20 p-0'" alt="asets-logo">
+                    :class="scrolled ? 'h-12' : 'h-7 p-0'" alt="asets-logo">
             </a>
 
             <button class="lg:hidden mr-5" type="button" data-drawer-target="drawer-mobiles"
@@ -60,40 +61,47 @@ window.addEventListener('scroll', () => { scrolled = window.scrollY > 5; })" :cl
             </button>
 
             <div class="hidden lg:flex items-center flex-col lg:flex-row lg:space-x-2">
-                <a href="{{ route('home') }}" :class="scrolled ? 'text-gray-800' : 'text-white'"
+                <a href="{{ route('home') }}" :class="scrolled ? 'text-gray-800' : 'text-white font-medium'"
                     class="rounded-lg px-4 py-1 {{ request()->routeIs('home') ? 'bg-white/20 backdrop-blur-md' : 'hover:underline' }}"
                     aria-current="page">Home</a>
-                <a href="{{ route('location') }}" :class="scrolled ? 'text-gray-800' : 'text-white'"
+                <a href="{{ route('location') }}" :class="scrolled ? 'text-gray-800' : 'text-white font-medium'"
                     class="rounded-lg px-4 py-1 {{ request()->routeIs('location') ? 'bg-white/20 backdrop-blur-md' : 'hover:underline' }}">Location</a>
-                <a href="{{ route('about') }}" :class="scrolled ? 'text-gray-800' : 'text-white'"
+                <a href="{{ route('about') }}" :class="scrolled ? 'text-gray-800' : 'text-white font-medium'"
                     class="rounded-lg px-4 py-1 {{ request()->routeIs('about') ? 'bg-white/20 backdrop-blur-md' : 'hover:underline' }}">About
                     Us</a>
-                <a href="{{ route('investor-relation') }}" :class="scrolled ? 'text-gray-800' : 'text-white'"
+                <a href="{{ route('investor-relation') }}"
+                    :class="scrolled ? 'text-gray-800' : 'text-white font-medium'"
                     class="rounded-lg px-4 py-1 {{ request()->routeIs('investor-relation') ? 'bg-white/20 backdrop-blur-md' : 'hover:underline' }}">Investor
                     Relations</a>
 
-                <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" :class="scrolled ? 'text-gray-800' : 'text-white'"
-                    class="rounded-lg px-4 py-1 {{ request()->routeIs('partnership') ? 'bg-white/20 backdrop-blur-md' : 'hover:underline' }}" type="button">Partnership
-                        </button>
-                        
-                        <!-- Dropdown menu -->
-                        <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700">
-                            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-                              <li>
-                                <a href="partnership#product" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Product</a>
-                              </li>
-                              <li>
-                                <a href="partnership#platform" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Platform</a>
-                              </li>
-                              <li>
-                                <a href="partnership#partnership" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Partnership</a>
-                              </li>
-                            </ul>
-                        </div> 
+                <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown"
+                    :class="scrolled ? 'text-gray-800' : 'text-white font-medium'"
+                    class="rounded-lg px-4 py-1 {{ request()->routeIs('partnership') ? 'bg-white/20 backdrop-blur-md' : 'hover:underline' }}"
+                    type="button">Partnership
+                </button>
 
-                <a href="{{ route('contact-us') }}" :class="scrolled ? 'text-gray-800' : 'text-white'"
+                <!-- Dropdown menu -->
+                <div id="dropdown"
+                    class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700">
+                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+                        <li>
+                            <a href="partnership#product"
+                                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Product</a>
+                        </li>
+                        <li>
+                            <a href="partnership#platform"
+                                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Platform</a>
+                        </li>
+                        <li>
+                            <a href="partnership#partnership"
+                                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Partnership</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <a href="{{ route('contact-us') }}" :class="scrolled ? 'text-gray-800' : 'text-white font-medium'"
                     class="rounded-lg px-4 py-1 {{ request()->routeIs('contact-us') ? 'bg-white/20 backdrop-blur-md' : 'hover:underline' }}">Contact</a>
-                
+
                 <div class="flex">
                     <x-dropdown-users />
                 </div>
@@ -134,22 +142,27 @@ window.addEventListener('scroll', () => { scrolled = window.scrollY > 5; })" :cl
             Relations</a>
 
         <button id="dropdownDefaultButton2" data-dropdown-toggle="dropdown2"
-            class="text-start {{ request()->routeIs('partnership') ? 'bg-purple-950 text-white rounded p-2' : 'hover:underline' }}" type="button">Partnership</button>
-                
-                <!-- Dropdown menu -->
-                <div id="dropdown2" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700">
-                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-                      <li>
-                        <a href="partnership#product" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Product</a>
-                      </li>
-                      <li>
-                        <a href="partnership#platform" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Platform</a>
-                      </li>
-                      <li>
-                        <a href="partnership#partnership" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Partnership</a>
-                      </li>
-                    </ul>
-                </div> 
+            class="text-start {{ request()->routeIs('partnership') ? 'bg-purple-950 text-white rounded p-2' : 'hover:underline' }}"
+            type="button">Partnership</button>
+
+        <!-- Dropdown menu -->
+        <div id="dropdown2"
+            class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700">
+            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+                <li>
+                    <a href="partnership#product"
+                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Product</a>
+                </li>
+                <li>
+                    <a href="partnership#platform"
+                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Platform</a>
+                </li>
+                <li>
+                    <a href="partnership#partnership"
+                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Partnership</a>
+                </li>
+            </ul>
+        </div>
 
         <a href="{{ route('contact-us') }}"
             class="{{ request()->routeIs('contact-us') ? 'bg-purple-950 text-white rounded p-2' : 'hover:underline' }}">Contact

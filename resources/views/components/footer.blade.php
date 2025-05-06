@@ -75,6 +75,9 @@
                     <li class="mb-2">
                         <a href="{{ route('information-page') }}" class="hover:underline">FAQ</a>
                     </li>
+                    <li class="mb-2">
+                        <a href="{{ route('privacy-policy') }}" class="hover:underline">Privacy Policy</a>
+                    </li>
                 </ul>
             </div>
             <div>
@@ -117,12 +120,16 @@
         </div>
         <br>
         <div class="flex justify-start space-x-4 text-xs">
-            <span class=" text-gray-500 sm:text-center ">© 2024 <a href="#" class="hover:underline">Asets</a>. All
+            <span class=" text-gray-500 sm:text-center ">© 2024 <a href="#" class="hover:underline">Asets</a>.
+                All
                 Rights Reserved.
             </span>
-            <a href="#" class="text-gray-500 hover:underline ">
-                <span>Privacy</span>
+            <a href="{{ route('privacy-policy') }}" class="text-gray-500 hover:underline ">
+                <span>Privacy Policy</span>
             </a>
+            {{-- <a href="{{ route('terms') }}" class="text-gray-500 hover:underline ">
+                <span>Terms of Service</span>
+            </a> --}}
         </div>
     </div>
 </footer>
